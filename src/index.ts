@@ -21,3 +21,5 @@ app.use("/script", scriptController);
 
 // Start server
 app.listen(PORT, () => console.log(`Server is listening on PORT: ${PORT}!`));
+
+export default app;
