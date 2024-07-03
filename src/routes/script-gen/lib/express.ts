@@ -1,8 +1,6 @@
-import fs from "fs";
 import transcriber from "./script-generation/transcriber";
 import extensions from "./extensions/extensions";
 import { ScriptBuilder } from "./script-generation/ScriptBuilder";
-import { PRE_SCRIPTS } from "../constants/paths";
 
 export default function generateExpressScript(): string {
   const dependencies: string[] = [];
@@ -35,7 +33,8 @@ export default function generateExpressScript(): string {
   scriptBuilder.addLine(
     transcriber.writeFile(
       "./src/index.ts",
-      fs.readFileSync(PRE_SCRIPTS + "/files/express/index.ts", "utf8")
+      // fs.readFileSync(PRE_SCRIPTS + "/files/express/index.ts", "utf8") //TODO: Fix this on vercel, does not load route
+      ""
     )
   );
 
