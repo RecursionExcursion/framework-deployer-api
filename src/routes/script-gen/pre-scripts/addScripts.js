@@ -1,5 +1,6 @@
+/** @param {Map<string,string>} scriptsMap*/
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const addScripts = (/** @type {Map} */ scriptsMap) => {
+const addScripts = (scriptsMap) => {
   const propertyOrder = [
     "name",
     "version",

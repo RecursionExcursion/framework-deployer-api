@@ -1,5 +1,6 @@
 import express from "express";
-import generateScript, { ScriptType } from "./lib/script-generation/scriptGenerator";
+import scriptService from "./scriptService";
+import { ScriptType } from "./types/scriptType";
 
 const router = express.Router();
 
@@ -12,11 +13,9 @@ router.get("/dl", (req, res) => {
 
   if (!scriptType) return res.status(400).send("Invalid script type");
 
-  const script = generateScript(scriptType);
+  const { headers, script } = scriptService.generateScript(scriptType);
 
-  const fileName = "script.mjs";
-  res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
-  res.setHeader("Content-Type", "application/javascript");
+  headers.forEach(({ key, value }) => res.setHeader(key, value));
 
   res.write(script);
   res.end();

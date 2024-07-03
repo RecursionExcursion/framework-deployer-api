@@ -39,9 +39,12 @@ export class ScriptBuilder {
   addLine = (line: string) => this.lines.push(line);
 
   build() {
-    const scriptCopy = structuredClone(this._script);
+    this.mapExtensionsToFields(this.extensions);
+    return this.writeToScript(this._script, this.extensions);
+  }
 
-    const mappedExtensions = this.extensions.map((extension) => {
+  private mapExtensionsToFields = (extensions: Extension[]) => {
+    extensions.forEach((extension) => {
       if (extension.dependencies)
         this.dependencies.push(...extension.dependencies);
 
@@ -50,17 +53,18 @@ export class ScriptBuilder {
 
       if (extension.additionalExecutions)
         this.lines.push(...extension.additionalExecutions);
-
-      return {
-        ...extension,
-        priority: extension.priority ?? Number.MAX_SAFE_INTEGER,
-      };
     });
+  };
 
-    const isBeforeDependencies = (priority: number) =>
+  private writeToScript = (script: Script, extensions: Extension[]) => {
+    const scriptCopy = structuredClone(script);
+
+    const isBeforeDependencies = (priority: number | undefined) => {
+      if (!priority) return false;
       priority <= dependencyPriority;
+    };
 
-    mappedExtensions
+    extensions
       .filter((extension) => isBeforeDependencies(extension.priority))
       .forEach((extension) => {
         if (extension.script) scriptCopy.addLine(extension.script);
@@ -69,17 +73,17 @@ export class ScriptBuilder {
     scriptCopy.addLine(installDependencies(this.dependencies));
     scriptCopy.addLine(installDevDependencies(this.devDependencies));
 
-    mappedExtensions
+    extensions
       .filter((extension) => !isBeforeDependencies(extension.priority))
       .forEach((extension) => {
         if (extension.script) scriptCopy.addLine(extension.script);
       });
 
     if (this.scripts.size > 0)
-      scriptCopy.joinScript(addPackageJsonScripts(this.scripts));
+      scriptCopy.mergeScript(addPackageJsonScripts(this.scripts));
 
     this.lines.forEach((line) => scriptCopy.addLine(line));
 
     return scriptCopy;
-  }
+  };
 }

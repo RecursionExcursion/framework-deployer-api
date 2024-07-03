@@ -7,7 +7,7 @@ export default class Script {
     this.lines.push(line);
   }
 
-  joinScript(otherScript: Script) {
+  mergeScript(otherScript: Script) {
     otherScript.getLines().forEach((line) => this.addLine(line));
   }
 

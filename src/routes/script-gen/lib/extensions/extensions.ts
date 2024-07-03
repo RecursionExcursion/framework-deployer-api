@@ -1,3 +1,4 @@
+import { PRE_SCRIPTS } from "../../constants/paths";
 import { Extension } from "../../types/extension";
 import transcriber from "../script-generation/transcriber";
 import fs from "fs";
@@ -46,7 +47,7 @@ const tsc = (params?: ExtensionParams): Extension => {
     additionalExecutions: [
       transcriber.writeFile(
         "./tsconfig.json",
-        fs.readFileSync("src/scripts/files/express/tsconfig.json", "utf8")
+        fs.readFileSync(PRE_SCRIPTS + "/files/express/tsconfig.json", "utf8")
       ),
     ],
     devDependencies: ["typescript", "ts-node"],
@@ -85,7 +86,7 @@ const gitIgnore = (params?: ExtensionParams): Extension => {
   return {
     script: transcriber.writeFile(
       ".gitignore",
-      fs.readFileSync("src/scripts/files/express/gitIgnore.txt", "utf8")
+      fs.readFileSync(PRE_SCRIPTS + "/files/express/gitIgnore.txt", "utf8")
     ),
     priority: params?.priority,
   };
@@ -95,7 +96,7 @@ const nodemon = (params?: ExtensionParams): Extension => {
   return {
     script: transcriber.writeFile(
       "nodemon.json",
-      fs.readFileSync("src/scripts/files/express/nodemon.json", "utf8")
+      fs.readFileSync(PRE_SCRIPTS + "/files/express/nodemon.json", "utf8")
     ),
     devDependencies: ["nodemon"],
     priority: params?.priority,
