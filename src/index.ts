@@ -14,6 +14,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
+app.get("/", (req, res) => res.send("Express on Vercel"));
+
 //Routes
 app.use("/script", scriptController);
 
