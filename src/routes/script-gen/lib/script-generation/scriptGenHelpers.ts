@@ -4,7 +4,7 @@ import transcriber from "./transcriber";
 import { PRE_SCRIPTS } from "../../constants/paths";
 
 export const executors = () =>
-  fs.readFileSync(PRE_SCRIPTS + "/executors.js", "utf8");
+  fs.readFileSync(PRE_SCRIPTS + "/executors.cjs", "utf8");
 
 export const addPackageJsonScripts = (scriptMap: Map<string, string>) => {
   const script = new Script();
@@ -16,7 +16,7 @@ export const addPackageJsonScripts = (scriptMap: Map<string, string>) => {
           ]);`;
 
   script.addLine(scriptsString);
-  script.addLine(fs.readFileSync(PRE_SCRIPTS + "/addScripts.js", "utf8"));
+  script.addLine(fs.readFileSync(PRE_SCRIPTS + "/addScripts.cjs", "utf8"));
   script.addLine("addScripts(scripts);");
 
   return script;

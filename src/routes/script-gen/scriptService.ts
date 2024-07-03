@@ -6,7 +6,7 @@ const scriptService = {
   generateScript: (type: ScriptType) => {
     const script = generateScript(type);
 
-    const fileName = `${type}-script.mjs`;
+    const fileName = `${type}-script.cjs`;
     const headers: Header[] = [
       {
         key: "Content-Disposition",
