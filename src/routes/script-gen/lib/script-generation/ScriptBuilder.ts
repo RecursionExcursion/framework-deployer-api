@@ -57,7 +57,10 @@ export class ScriptBuilder {
   };
 
   private writeToScript = (script: Script, extensions: Extension[]) => {
-    const scriptCopy = structuredClone(script);
+    const scriptCopy = Object.create(
+      Object.getPrototypeOf(script),
+      Object.getOwnPropertyDescriptors(script)
+    );
 
     const isBeforeDependencies = (priority: number | undefined) => {
       if (!priority) return false;
